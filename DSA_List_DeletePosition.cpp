@@ -9,22 +9,28 @@ struct nut
 typedef struct nut Node;
 
 Node *NhapList(Node** head, int &n);
-int LastEvenNumber(Node *head, int n);
+Node *XoaPosition(Node *head,int p, int n);
 Node *XemDS(Node *head);
 
 int main()
 {
 	int n;
 	Node *head=NULL;
-	
+	int p;
 	NhapList(&head, n);
-	int num=LastEvenNumber(head,n);
-
-	printf("Day la list vua nhap:");
+	printf("Day la list vua nhap:\n");
 	XemDS(head);
 	
-	if(num%2==0) printf("\n\nSo chan cuoi cung cua list: %d",num);
-	else printf("\nList rong!");
+	do
+	{
+		printf("\nNhap vao gia tri phan tu Position: ");
+		fflush(stdin);
+		scanf("%d", &p);
+	}while(p<0 || p>n-1);
+	
+	head=XoaPosition(head,p,n);	
+	printf("Day la list vua xoa Position:\n");
+	XemDS(head);
 	
 	//giai phong list
 	while(head!=NULL)
@@ -35,10 +41,10 @@ int main()
 	}
 }
 
-Node *NhapList(Node** head, int &n)
+Node *NhapList(Node **head, int &n)
 {
+		int x;
   	Node* nlist;
-    int x;
     printf("Nhap vao so node: ");
     scanf("%d", &n);
     printf("Nhap vao list:\n");
@@ -52,26 +58,34 @@ Node *NhapList(Node** head, int &n)
     }
   return *head;
 }
-int LastEvenNumber(Node *head, int n)
+Node *XoaPosition(Node *head,int p, int n)
 {
-	int num=-1;
-	Node *temp=head;
-	while(temp!=NULL)
+	int x;
+	
+	Node *temp1=head;
+	Node *temp2=temp1->next;	
+	if(p==0) 
 	{
-			if((temp->giatri)%2==0)
-			{
-			num=(temp)->giatri;
-			}
-		temp=temp->next;
-	}	
-	return num;
+		head=head->next;
+		free(temp1);
+		return head;
+	}
+	for(int i=1; i<p && temp1->next!=NULL; i++)
+	{
+		temp1=temp1->next;
+		temp2=temp2->next;
+	}
+	
+	temp1->next=temp2->next;
+	free(temp2);
+	return head;
 }
 
 Node *XemDS(Node *head)
 {
 	while (head!=NULL)
 	{
-		printf("\t%d", head->giatri);
+		printf("%d\t", head->giatri);
 		head=head->next;
 	}
 	return head;

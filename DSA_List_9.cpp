@@ -10,19 +10,22 @@ struct nut
 
 typedef struct nut Node;
 
-Node *ChuoiNganNhat(Node **head);
+Node *NhapList(Node** head, int &n);
+int ChuoiNganNhat(Node *head, int n);
 Node *XemDS(Node *head);
 
 int main()
 {
 	int n;
 	Node *head=NULL;
-	Node *dem=ChuoiNganNhat(&head);
+	
+	NhapList(&head, n);
+	int dem=ChuoiNganNhat(head, n);
 
 	printf("\nDay la list vua nhap:\n");
 	XemDS(head);
 	
-	if(dem!=NULL) printf("\n\nChuoi ngan nhat la chuoi so: %d",dem->vitri);
+	if(dem>0) printf("\n\nChuoi ngan nhat la chuoi so: %d",dem);
 	else printf("\nList rong!");
 	
 	//giai phong list
@@ -33,9 +36,8 @@ int main()
 		free(temp);
 	}
 }
-Node *ChuoiNganNhat(Node **head)
+Node *NhapList(Node** head, int &n)
 {
-	int n;
 	do
 	{
 		printf("Nhap vao so luong phan tu cua danh sach: ");
@@ -44,7 +46,6 @@ Node *ChuoiNganNhat(Node **head)
 	fflush(stdin);	
 	//thiet lap phan tu cho list
 	char x[21];
-	int d=20, idx=0;
 	Node* newList;
 	printf("Nhap vao cac chuoi (Enter khi het 1 chuoi):\n");
 	fflush(stdin);
@@ -57,26 +58,34 @@ Node *ChuoiNganNhat(Node **head)
 		strcpy(newList->a,x);
 		newList->next=(*head);
 		(*head)=newList;
-	int len=strlen((*head)->a);
-		if(len<d )
+	}
+	return *head;
+}
+int ChuoiNganNhat(Node *head, int n)
+{
+	int idx=1, i=1;
+	Node *temp=head;
+	int d=strlen(temp->a);
+	while(temp!=NULL)
+	{
+		int len=strlen(temp->a);
+		if(len<d)
 		{
 			d=len;
 			idx=i;
 		}
+		i++;
+		temp=temp->next;
 	}
 
-	Node* dem;
-	dem=(Node*)malloc(sizeof(Node));
-	dem->vitri=n-idx;
-	dem->next=NULL;
-	return dem;
+	return idx;
 }
 
 Node *XemDS(Node *head)
 {
 	while (head!=NULL)
 	{
-		printf("%s\t", head->a);
+		printf("%s\t\t", head->a);
 		head=head->next;
 		
 	}

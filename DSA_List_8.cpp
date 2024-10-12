@@ -8,19 +8,21 @@ struct nut
 
 typedef struct nut Node;
 
-Node *DemA(Node **head);
+Node *NhapList(Node** head, int &n);
+int DemA(Node *head,int n);
 Node *XemDS(Node *head);
 
 int main()
 {
 	int n;
 	Node *head=NULL;
-	Node *dem=DemA(&head);
+	NhapList(&head, n);
+	int dem=DemA(head,n);
 
-	printf("Day la list vua nhap:");
+	printf("Day la list vua nhap:\n");
 	XemDS(head);
 	
-	if(dem!=NULL) printf("\n\nSo ky tu xuat hien trong list: %d",dem->giatri);
+	if(dem!=0) printf("\n\nPhan tu cuoi cung la 'A' o vi tri thu %d",dem);
 	else printf("\nList rong!");
 	
 	//giai phong list
@@ -31,49 +33,37 @@ int main()
 		free(temp);
 	}
 }
-Node *DemA(Node **head)
-{
-	int n;
-	do
-	{
-		printf("Nhap vao so luong phan tu cua danh sach: ");
-		scanf("%d", &n);
-	} while(n<0);
-	fflush(stdin);	
-	//thiet lap phan tu cho list
-	char x;
-	int d=0, index=0;
-	Node* newList;
-	printf("Nhap vao gia tri cac phan tu cua list:\n");
-	fflush(stdin);
-	
-	//nhap list
-	for(int i=0; i<n; i++)
-	{
-		scanf("%c", &x);
-		newList=(Node*)malloc(sizeof(Node));
-		newList->giatri=x;
-		newList->next=(*head);
-		(*head)=newList;
-	} 
-	
-	for(int i=0; i<n; i++)
-	{
-		while(newList!=NULL)
-		{
-			d++;
-			//duyet qua cac ky tu
-			if((newList->giatri)=='A') index=d;
-			newList=newList->next;	
-		}
-	} 
 
-	//khoi tao index
-	Node* dem;
-	dem=(Node*)malloc(sizeof(Node));
-	dem->giatri=index;
-	dem->next=NULL;
-	return dem;
+Node *NhapList(Node** head, int &n)
+{
+  	Node* nlist;
+    char x;
+    printf("Nhap vao so node: ");
+    scanf("%d", &n);
+    printf("Nhap vao list:\n");
+    for (int i = 0; i < n; i++) 
+		{
+			fflush(stdin);
+      scanf("%c", &x);
+      nlist = (Node*)malloc(sizeof(Node));
+      nlist->giatri = x;
+      nlist->next = *head;
+      *head = nlist;
+    }
+  return *head;
+}
+int DemA(Node *head, int n)
+{
+	int dem=0, index=0;
+	Node *temp=head;
+	while(temp!=NULL)
+	{
+			dem++;
+			//duyet qua cac ky tu
+			if((temp->giatri)=='A') index=dem;
+			temp=temp->next;	
+	}
+	return index;
 }
 
 Node *XemDS(Node *head)

@@ -4,27 +4,27 @@
 struct nut
 {
 	char a[21];
-	int vitri;
 	struct nut *next;
 };
 
 typedef struct nut Node;
 
-Node *ChuoiNganNhat(Node **head);
+Node *NhapList(Node** head, int &n);
+char ChuoiDaiNhat(Node *head, int n);
 Node *XemDS(Node *head);
 
 int main()
 {
 	int n;
 	Node *head=NULL;
-	Node *dem=ChuoiNganNhat(&head);
-
+	
+	NhapList(&head, n);
+	
 	printf("\nDay la list vua nhap:\n");
 	XemDS(head);
 	
-	if(dem!=NULL) printf("\n\nChuoi ngan nhat la chuoi so: %s",dem->a);
-	else printf("\nList rong!");
-	
+	ChuoiDaiNhat(head,n);
+
 	//giai phong list
 	while(head!=NULL)
 	{
@@ -33,43 +33,48 @@ int main()
 		free(temp);
 	}
 }
-Node *ChuoiNganNhat(Node **head)
+Node *NhapList(Node** head, int &n)
 {
-	int n;
 	do
 	{
 		printf("Nhap vao so luong phan tu cua danh sach: ");
 		scanf("%d", &n);
-	} while(n<0);
-	fflush(stdin);	
+	} while(n<0);	
 	//thiet lap phan tu cho list
-	char x[21], copy[21];
-	int d=0;
+	char x[21];
 	Node* newList;
 	printf("Nhap vao cac chuoi (Enter khi het 1 chuoi):\n");
-	fflush(stdin);
 	
 	//nhap list
 	for(int i=0; i<n; i++)
 	{
+		fflush(stdin);
 		gets(x);
 		newList=(Node*)malloc(sizeof(Node));
 		strcpy(newList->a,x);
 		newList->next=(*head);
 		(*head)=newList;
-	int len=strlen((*head)->a);
+	}
+	return *head;
+}
+char ChuoiDaiNhat(Node *head, int n)
+{
+	Node *temp=head;
+	char copy[21];
+	strcpy(copy,(temp)->a);
+	int d=strlen(temp->a);
+	while(temp!=NULL)
+	{
+		int len=strlen(temp->a);
 		if(len>d )
 		{
 			d=len;
-			strcpy(copy,(*head)->a);
+			strcpy(copy,(temp)->a);
 		}
-	}
-
-	Node* dem;
-	dem=(Node*)malloc(sizeof(Node));
-	strcpy(dem->a, copy);
-	dem->next=NULL;
-	return dem;
+		temp=temp->next;
+	}	
+	printf("\n\n\nChuoi dai nhat la:");
+	puts(copy);
 }
 
 Node *XemDS(Node *head)
@@ -77,8 +82,7 @@ Node *XemDS(Node *head)
 	while (head!=NULL)
 	{
 		printf("%s\t", head->a);
-		head=head->next;
-		
+		head=head->next;		
 	}
 	return head;
 }

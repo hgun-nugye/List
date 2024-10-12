@@ -8,17 +8,21 @@ struct nut
 
 typedef struct nut Node;
 
-Node *SumPosNumber(Node **head);
+Node *NhapList(Node** head, int &n); 
+float SumPosNumber(Node *head, int n);
 Node *XemDS(Node *head);
 
 int main()
 {
 	int n;
 	Node *head=NULL;
-	Node *sum=SumPosNumber(&head);
+	NhapList(&head, n);
+	float sum=SumPosNumber(head,n);
+	
+	printf("\nDay la danh sach vua nhap:\n");
 	XemDS(head);
 	
-	if(sum!=NULL) printf("\n\nTong cac gia tri duong cua list: %.2f",sum->giatri);
+	if(sum!=0) printf("\n\nTong cac gia tri duong cua list: %.2f",sum);
 	else printf("\nList rong!");
 	
 	//giai phong list
@@ -29,41 +33,38 @@ int main()
 		free(temp);
 	}
 }
-Node *SumPosNumber(Node **head)
+
+Node *NhapList(Node** head, int &n)
 {
-	int n;
-	do
-	{
-		printf("Nhap vao so luong phan tu cua danh sach: ");
-		scanf("%d", &n);
-	} while(n<0);
-	
-	//thiet lap phan tu cho list
-	float x, S=0;
-	Node* newList;
-	printf("Nhap vao gia tri cac phan tu cua list:\n");
-	fflush(stdin);
-	for(int i=0; i<n; i++)
-	{
-		scanf("%f", &x);
-		newList=(Node*)malloc(sizeof(Node));
-		newList->giatri=x;
-		newList->next=(*head);
-		(*head)=newList;
-		
-		//Tinh tong cac so duong
-		if((*head)->giatri>0)
+  	Node* nlist;
+    float x;
+    printf("Nhap vao so luong so thuc can luu tru: ");
+    scanf("%d", &n);
+    printf("Nhap vao list:\n");
+    for (int i = 0; i < n; i++) 
 		{
-			S+= (*head)->giatri;
+      scanf("%f", &x);
+      nlist = (Node*)malloc(sizeof(Node));
+      nlist->giatri = x;
+      nlist->next = *head;
+      *head = nlist;
+    }
+  return *head;
+}
+float SumPosNumber(Node *head, int n)
+{
+	float S=0;
+	Node *temp=head;
+	while(temp!=NULL)
+	{
+		//Tinh tong cac so duong
+		if(temp->giatri>0)
+		{
+			S+= temp->giatri;
 		}
+		temp=temp->next;
 	} 
-	
-	//khoi tao sum
-	Node* sum;
-	sum=(Node*)malloc(sizeof(Node));
-	sum->giatri=S;
-	sum->next=NULL;
-	return sum;
+	return S;
 }
 
 Node *XemDS(Node *head)

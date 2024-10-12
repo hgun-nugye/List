@@ -8,14 +8,20 @@ struct nut
 
 typedef struct nut Node;
 
-Node *MaxNegavNumber(Node **head);
+//prototype
+Node *NhapList(Node** head, int &n);
+Node *MaxNegavNumber(Node *head, int n);
 Node *XemDS(Node *head);
 
 int main()
 {
 	int n;
 	Node *head=NULL;
-	Node *Max=MaxNegavNumber(&head);
+	NhapList(&head, n);
+	
+	Node *Max=MaxNegavNumber(head, n);
+	
+	printf("\nDay la danh sach vua nhap:\n");
 	XemDS(head);
 	
 	if(Max!=NULL) printf("\n\nGia tri am lon nhat cua list la: %.2f",Max->giatri);
@@ -29,35 +35,38 @@ int main()
 		free(temp);
 	}
 }
-Node *MaxNegavNumber(Node **head)
+
+Node *NhapList(Node** head, int &n)
 {
-	int n;
-	do
-	{
-		printf("Nhap vao so luong phan tu cua danh sach: ");
-		scanf("%d", &n);
-	} while(n<0);
+  	Node* nlist;
+    float x;
+    printf("Nhap vao so luong so thuc can luu tru: ");
+    scanf("%d", &n);
+    printf("Nhap vao list:\n");
+    for (int i = 0; i < n; i++) 
+		{
+      scanf("%f", &x);
+      nlist = (Node*)malloc(sizeof(Node));
+      nlist->giatri = x;
+      nlist->next = *head;
+      *head = nlist;
+    }
+  return *head;
+}
+Node *MaxNegavNumber(Node *head, int n)
+{
 	
-	//thiet lap phan tu cho list
-	float x;
 	//khoi tao max
 	Node* Max=NULL;
-	Node* newList;
-	printf("Nhap vao gia tri cac phan tu cua list:\n");
-	fflush(stdin);
-	for(int i=0; i<n; i++)
+	Node *temp=head;
+	while(temp!=NULL)
 	{
-		scanf("%f", &x);
-		newList=(Node*)malloc(sizeof(Node));
-		newList->giatri=x;
-		newList->next=(*head);
-		(*head)=newList;
-		
 		//Tim so am lon nhat
-		if((Max==NULL||Max->giatri<(*head)->giatri)&& (*head)->giatri<0 )
+		if((Max==NULL||Max->giatri<(temp)->giatri)&& (temp)->giatri<0 )
 		{
-			Max=(*head);
+			Max=(temp);
 		}
+		temp=temp->next;
 	}
 	return Max;
 }
