@@ -9,7 +9,7 @@ struct nut {
 typedef struct nut Node;
 
 Node *NhapList(Node** head, int &n); 
-Node* RealNumber(Node*head, int n);
+Node *MinRealNumber(Node*head, int n);
 void XemDS(Node* head);
 
 int main() 
@@ -17,7 +17,7 @@ int main()
     int n;
     Node *head = NULL;
     NhapList(&head,n);
-    Node* min = RealNumber(head,n);
+    Node* min = MinRealNumber(head,n);
 
 		printf("\nDay la danh sach vua nhap:\n");
 		XemDS(head);
@@ -53,7 +53,7 @@ Node *NhapList(Node** head, int &n)
     }
   return *head;
 }
-Node* RealNumber(Node*head, int n)
+Node *MinRealNumber(Node*head, int n)
 {
 	Node *min = NULL; // khoi tao min=NULL
 	Node *temp;

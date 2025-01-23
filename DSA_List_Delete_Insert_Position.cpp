@@ -9,6 +9,7 @@ struct nut
 typedef struct nut Node;
 
 Node *NhapList(Node** head, int &n);
+Node *ChenPosition(Node *head,int p, int n);
 Node *XoaPosition(Node *head,int p, int n);
 Node *XemDS(Node *head);
 
@@ -19,6 +20,17 @@ int main()
 	int p;
 	NhapList(&head, n);
 	printf("Day la list vua nhap:\n");
+	XemDS(head);
+	
+	do
+	{
+		printf("\nNhap vao Position can chen: ");
+		fflush(stdin);
+		scanf("%d", &p);
+	}while(p<0 || p>n-1);
+	
+	head=ChenPosition(head,p,n);	
+	printf("Day la list vua chen Position:\n");
 	XemDS(head);
 	
 	do
@@ -57,6 +69,34 @@ Node *NhapList(Node **head, int &n)
       *head = nlist;
     }
   return *head;
+}
+
+Node *ChenPosition(Node *head,int p, int n)
+{
+	int x;
+	Node *newValue;
+	printf("\nNhap vao gia tri phan tu can chen: ");
+	scanf("%d", &x);
+	
+	newValue=(Node*)malloc(sizeof(Node));
+	newValue->giatri=x;
+	Node *temp1=head;
+	Node *temp2=temp1->next;	
+	if(p==0) 
+	{
+		newValue->next=head;
+		head=newValue;
+		return head;
+	}
+	for(int i=1; i<p && temp1->next!=NULL; i++)
+	{
+		temp1=temp1->next;
+		temp2=temp2->next;
+	}
+	
+	temp1->next=newValue;
+	newValue->next=temp2;
+	return head;
 }
 
 Node *XoaPosition(Node *head,int p, int n)
